@@ -3,91 +3,198 @@
 <html lang="es">
 
 <head>
-    <title>Dashboard de Torneos Gamer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#090D18">
+    <title>NEON ARENA | Dashboard Gamer</title>
+
     <link rel="stylesheet" href="estilos.css">
     <script src="dashboard.js" defer></script>
 </head>
 
 <body>
+    <div class="fondo-efectos" aria-hidden="true"></div>
 
-    <header>
-        <h1>Dashboard de Torneos Gamer</h1>
+    <header class="encabezado">
+        <div class="logo">
+            <span class="logo-icono">▣</span>
+            <div>
+                <p class="etiqueta-superior">GAMING CONTROL SYSTEM</p>
+                <h1>NEON<span> ARENA</span></h1>
+            </div>
+        </div>
+
+        <div class="estado-sistema">
+            <span class="indicador"></span>
+            SISTEMA ACTIVO
+        </div>
     </header>
 
-    <main>
+    <main class="contenedor-principal">
 
-        <section>
-            <h2>Registrar torneo</h2>
-
+        <section class="presentacion">
             <div>
-                <label for="txtNombre">Nombre del torneo:</label>
-                <input type="text" id="txtNombre">
-                <p id="errorNombre"></p>
+                <p class="etiqueta-superior">PLAYER 01 // ADMINISTRACIÓN</p>
+                <h2>DASHBOARD <span>GAMER</span></h2>
+                <p class="descripcion">
+                    Registra torneos, administra participantes y controla
+                    la recaudación de tu próxima competición.
+                </p>
             </div>
 
-            <div>
-                <label for="txtCategoria">Categoría:</label>
-                <select id="txtCategoria">
-                    <option value="">Seleccione una categoría</option>
-                    <option value="Lucha">Lucha</option>
-                    <option value="Estrategia">Estrategia</option>
-                    <option value="Arcade">Arcade</option>
-                    <option value="Deportes">Deportes</option>
-                    <option value="Aventura">Aventura</option>
-                </select>
-                <p id="errorCategoria"></p>
+            <div class="insignia-arcade" aria-hidden="true">
+                <span>★</span>
+                <small>INSERT COIN</small>
             </div>
-
-            <div>
-                <label for="txtParticipantes">Participantes:</label>
-                <input type="number" id="txtParticipantes">
-                <p id="errorParticipantes"></p>
-            </div>
-
-            <div>
-                <label for="txtInscripcion">Valor de inscripción:</label>
-                <input type="number" id="txtInscripcion" step="0.01">
-                <p id="errorInscripcion"></p>
-            </div>
-
-            <div>
-                <label for="txtEmail">Correo electrónico:</label>
-                <input type="email" id="txtEmail">
-                <p id="errorEmail"></p>
-            </div>
-
-            <button type="button" onclick="registrarTorneo()">
-                Registrar torneo
-            </button>
-
-            <button type="button" onclick="limpiarFormulario()">
-                Limpiar
-            </button>
-
-            <p id="mensaje"></p>
         </section>
 
-        <section>
-            <h2>Torneos registrados</h2>
+        <section class="panel formulario-panel">
+            <div class="titulo-panel">
+                <div>
+                    <span class="numero-panel">01 / REGISTRO</span>
+                    <h2>Configurar torneo</h2>
+                </div>
+                <span class="icono-panel" aria-hidden="true">⌘</span>
+            </div>
 
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Categoría</th>
-                        <th>Participantes</th>
-                        <th>Inscripción</th>
-                        <th>Email</th>
-                        <th>Recaudación</th>
-                    </tr>
-                </thead>
+            <form id="formularioTorneo" novalidate>
 
-                <tbody id="tablaTorneos"></tbody>
-            </table>
+                <div class="grupo-campo">
+                    <label for="txtNombre">Nombre del torneo</label>
+                    <input
+                        type="text"
+                        id="txtNombre"
+                        placeholder="Ej. Cyber Champions"
+                        autocomplete="off"
+                        maxlength="100"
+                        required
+                    >
+                    <small id="errorNombre" class="error"></small>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="txtCategoria">Categoría</label>
+                    <select id="txtCategoria" required>
+                        <option value="">Selecciona una categoría</option>
+                        <option value="ESTRATEGIA">Estrategia</option>
+                        <option value="ARCADE">Arcade</option>
+                        <option value="AVENTURA">Aventura</option>
+                        <option value="Deportes">Deportes</option>
+                        <option value="Lucha">Lucha</option>
+                    </select>
+                    <small id="errorCategoria" class="error"></small>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="txtParticipantes">Participantes</label>
+                    <input
+                        type="number"
+                        id="txtParticipantes"
+                        placeholder="Entre 1 y 100"
+                        min="1"
+                        max="100"
+                        step="1"
+                        required
+                    >
+                    <small id="errorParticipantes" class="error"></small>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="txtInscripcion">Valor de inscripción ($)</label>
+                    <input
+                        type="number"
+                        id="txtInscripcion"
+                        placeholder="Ej. 10.00"
+                        min="0.01"
+                        step="any"
+                        required
+                    >
+                    <small id="errorInscripcion" class="error"></small>
+                </div>
+
+                <div class="grupo-campo campo-completo">
+                    <label for="txtEmail">Correo electrónico</label>
+                    <input
+                        type="email"
+                        id="txtEmail"
+                        placeholder="organizador@neonarena.com"
+                        autocomplete="email"
+                        required
+                    >
+                    <small id="errorEmail" class="error"></small>
+                </div>
+
+                <div class="acciones-formulario campo-completo">
+                    <button type="submit" class="boton boton-principal">
+                        <span aria-hidden="true">▶</span>
+                        REGISTRAR TORNEO
+                    </button>
+
+                    <button
+                        type="button"
+                        id="btnLimpiar"
+                        class="boton boton-secundario"
+                    >
+                        LIMPIAR
+                    </button>
+                </div>
+
+                <p
+                    id="mensaje"
+                    class="mensaje"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+            </form>
         </section>
+
+        <section class="panel torneos-panel">
+            <div class="titulo-panel">
+                <div>
+                    <span class="numero-panel">02 / COMPETICIONES</span>
+                    <h2>Torneos registrados</h2>
+                </div>
+
+                <div class="contador">
+                    <span class="contador-punto"></span>
+                    <span id="totalTorneos">0 TORNEOS</span>
+                </div>
+            </div>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Participantes</th>
+                            <th>Inscripción</th>
+                            <th>Email</th>
+                            <th>Recaudación</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaTorneos">
+                        <!-- JavaScript genera las filas aquí -->
+                    </tbody>
+                </table>
+
+                <div id="estadoVacio" class="estado-vacio">
+                    <span class="icono-vacio" aria-hidden="true">▧</span>
+                    <h3>NO HAY TORNEOS REGISTRADOS</h3>
+                    <p>Registra tu primera competición para comenzar.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="pie-pagina">
+            <p>NEON ARENA <span>//</span> GAMING MANAGEMENT SYSTEM</p>
+            <p>INSERT COIN <span>◆</span> START GAME</p>
+        </footer>
 
     </main>
-
 </body>
 
 </html>
