@@ -1,64 +1,120 @@
-/* ==========================================================================
-   RECURSO PARA ESTUDIANTES - EVALUACIÓN JAVASCRIPT
-   Dashboard de Torneos Gamer
-   ========================================================================== */
 
-// Actividad 3. Declarar el arreglo (10 puntos)
-// Declarar un arreglo global vacío llamado torneos.
-// Cada elemento deberá ser un objeto con las propiedades:
-// nombre, categoria, participantes, valorInscripcion, email y recaudacion.
 let torneos = [];
 
-/**
- * Actividad 4. Registrar y validar un torneo (30 puntos)
- * 12. Crear la función registrarTorneo() sin parámetros.
- */
 function registrarTorneo() {
-    // 13. Obtener los valores de todos los campos con document.getElementById()
 
-    // 14. Validar que el nombre tenga al menos 4 caracteres
+    let nombre = document.getElementById("txtNombre").value.trim();
+    let categoria = document.getElementById("txtCategoria").value;
+    let participantes = Number(document.getElementById("txtParticipantes").value);
+    let inscripcion = Number(document.getElementById("txtInscripcion").value);
+    let email = document.getElementById("txtEmail").value.trim();
 
-    // 15. Validar que se haya seleccionado una categoría
+    limpiarErrores();
 
-    // 16. Validar que los participantes sean un entero entre 1 y 100
+    let valido = true;
 
-    // 17. Validar que el valor de inscripción sea mayor que 0
+    if (nombre.length < 4) {
+        document.getElementById("errorNombre").innerHTML =
+            "El nombre debe tener al menos 4 caracteres";
+        valido = false;
+    }
 
-    // 18. Validar que el email no esté vacío. No se requiere validación avanzada de formato.
+    if (categoria === "") {
+        document.getElementById("errorCategoria").innerHTML =
+            "Seleccione una categoría";
+        valido = false;
+    }
 
-    // Si alguna validación falla, mostrar mensajes de error y detener la ejecución
+    if (
+        document.getElementById("txtParticipantes").value === "" ||
+        !Number.isInteger(participantes) ||
+        participantes < 1 ||
+        participantes > 100
+    ) {
+        document.getElementById("errorParticipantes").innerHTML =
+            "Ingrese un entero entre 1 y 100";
+        valido = false;
+    }
 
-    // 19. Calcular la recaudación estimada con: participantes × valor de inscripción
+    if (
+        document.getElementById("txtInscripcion").value === "" ||
+        !Number.isFinite(inscripcion) ||
+        inscripcion <= 0
+    ) {
+        document.getElementById("errorInscripcion").innerHTML =
+            "La inscripción debe ser mayor que 0";
+        valido = false;
+    }
 
-    // 20. Crear el objeto nuevoTorneo con los datos obtenidos
+    if (email === "") {
+        document.getElementById("errorEmail").innerHTML =
+            "Ingrese el correo electrónico";
+        valido = false;
+    }
 
-    // 21. Agregar el objeto al arreglo con push()
+    if (!valido) {
+        return;
+    }
 
-    // 22. Llamar a mostrarTorneos() y limpiarFormulario()
+    let recaudacion = participantes * inscripcion;
 
-    // 23. Mostrar un mensaje de registro exitoso
+    let nuevoTorneo = {
+        nombre: nombre,
+        categoria: categoria,
+        participantes: participantes,
+        valorInscripcion: inscripcion,
+        email: email,
+        recaudacion: recaudacion
+    };
+
+    torneos.push(nuevoTorneo);
+
+    mostrarTorneos();
+    limpiarFormulario();
+
+    document.getElementById("mensaje").innerHTML =
+        "Torneo registrado correctamente";
 }
 
-/**
- * Actividad 5. Mostrar los torneos (15 puntos)
- * 24. Crear la función mostrarTorneos() sin parámetros.
- */
 function mostrarTorneos() {
-    // 25. Crear una variable vacía para concatenar el HTML
 
-    // 26. Recorrer el arreglo torneos utilizando obligatoriamente un ciclo for
+    let html = "";
 
-    // 27. En cada vuelta, obtener el objeto actual y construir una fila de la tabla (<tr>...</tr>)
+    for (let i = 0; i < torneos.length; i++) {
 
-    // 28. Mostrar todos los datos y la recaudación calculada
+        let torneo = torneos[i];
 
-    // 29. Insertar el HTML final en el cuerpo de la tabla sin duplicar filas (usando innerHTML)
+        html += "<tr>";
+        html += "<td>" + torneo.nombre + "</td>";
+        html += "<td>" + torneo.categoria + "</td>";
+        html += "<td>" + torneo.participantes + "</td>";
+        html += "<td>$" + torneo.valorInscripcion.toFixed(2) + "</td>";
+        html += "<td>" + torneo.email + "</td>";
+        html += "<td>$" + torneo.recaudacion.toFixed(2) + "</td>";
+        html += "</tr>";
+    }
+
+    document.getElementById("tablaTorneos").innerHTML = html;
 }
 
-/**
- * Actividad 6. Limpiar el formulario (5 puntos)
- * 30. Crear la función limpiarFormulario().
- */
 function limpiarFormulario() {
-    // 31. Vaciar los campos del formulario, restablecer la categoría y limpiar los mensajes de error
+
+    document.getElementById("txtNombre").value = "";
+    document.getElementById("txtCategoria").value = "";
+    document.getElementById("txtParticipantes").value = "";
+    document.getElementById("txtInscripcion").value = "";
+    document.getElementById("txtEmail").value = "";
+
+    limpiarErrores();
+
+    document.getElementById("mensaje").innerHTML = "";
+}
+
+function limpiarErrores() {
+
+    document.getElementById("errorNombre").innerHTML = "";
+    document.getElementById("errorCategoria").innerHTML = "";
+    document.getElementById("errorParticipantes").innerHTML = "";
+    document.getElementById("errorInscripcion").innerHTML = "";
+    document.getElementById("errorEmail").innerHTML = "";
 }

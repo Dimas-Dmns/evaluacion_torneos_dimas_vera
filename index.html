@@ -1,15 +1,93 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard de Torneos Gamer</title>
     <link rel="stylesheet" href="estilos.css">
+    <script src="dashboard.js" defer></script>
 </head>
+
 <body>
-    
 
+    <header>
+        <h1>Dashboard de Torneos Gamer</h1>
+    </header>
 
-    <script src="dashboard.js"></script>
+    <main>
+
+        <section>
+            <h2>Registrar torneo</h2>
+
+            <div>
+                <label for="txtNombre">Nombre del torneo:</label>
+                <input type="text" id="txtNombre">
+                <p id="errorNombre"></p>
+            </div>
+
+            <div>
+                <label for="txtCategoria">Categoría:</label>
+                <select id="txtCategoria">
+                    <option value="">Seleccione una categoría</option>
+                    <option value="Lucha">Lucha</option>
+                    <option value="Estrategia">Estrategia</option>
+                    <option value="Arcade">Arcade</option>
+                    <option value="Deportes">Deportes</option>
+                    <option value="Aventura">Aventura</option>
+                </select>
+                <p id="errorCategoria"></p>
+            </div>
+
+            <div>
+                <label for="txtParticipantes">Participantes:</label>
+                <input type="number" id="txtParticipantes">
+                <p id="errorParticipantes"></p>
+            </div>
+
+            <div>
+                <label for="txtInscripcion">Valor de inscripción:</label>
+                <input type="number" id="txtInscripcion" step="0.01">
+                <p id="errorInscripcion"></p>
+            </div>
+
+            <div>
+                <label for="txtEmail">Correo electrónico:</label>
+                <input type="email" id="txtEmail">
+                <p id="errorEmail"></p>
+            </div>
+
+            <button type="button" onclick="registrarTorneo()">
+                Registrar torneo
+            </button>
+
+            <button type="button" onclick="limpiarFormulario()">
+                Limpiar
+            </button>
+
+            <p id="mensaje"></p>
+        </section>
+
+        <section>
+            <h2>Torneos registrados</h2>
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Participantes</th>
+                        <th>Inscripción</th>
+                        <th>Email</th>
+                        <th>Recaudación</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaTorneos"></tbody>
+            </table>
+        </section>
+
+    </main>
+
 </body>
+
 </html>
