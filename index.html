@@ -1,103 +1,103 @@
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color" content="#090D18">
-    <title>NEON ARENA | Dashboard Gamer</title>
+    <meta name="description" content="Dashboard gamer para registrar y administrar torneos.">
+
+    <title>Dashboard Gamer | Registro de Torneos</title>
 
     <link rel="stylesheet" href="estilos.css">
-    <script src="dashboard.js" defer></script>
 </head>
 
 <body>
-    <div class="fondo-efectos" aria-hidden="true"></div>
-
     <header class="encabezado">
         <div class="logo">
-            <span class="logo-icono">▣</span>
+            <span class="icono-logo">🎮</span>
             <div>
-                <p class="etiqueta-superior">GAMING CONTROL SYSTEM</p>
-                <h1>NEON<span> ARENA</span></h1>
+                <h1>ARCADE <span>TOURNAMENTS</span></h1>
+                <p>Panel de administración gamer</p>
             </div>
         </div>
 
         <div class="estado-sistema">
-            <span class="indicador"></span>
+            <span class="led"></span>
             SISTEMA ACTIVO
         </div>
     </header>
 
-    <main class="contenedor-principal">
-
+    <main class="contenedor">
         <section class="presentacion">
-            <div>
-                <p class="etiqueta-superior">PLAYER 01 // ADMINISTRACIÓN</p>
-                <h2>DASHBOARD <span>GAMER</span></h2>
-                <p class="descripcion">
-                    Registra torneos, administra participantes y controla
-                    la recaudación de tu próxima competición.
-                </p>
-            </div>
-
-            <div class="insignia-arcade" aria-hidden="true">
-                <span>★</span>
-                <small>INSERT COIN</small>
-            </div>
+            <p class="etiqueta">PLAYER MANAGEMENT SYSTEM</p>
+            <h2>Registra tu próximo <span>torneo</span></h2>
+            <p>
+                Completa los datos del torneo, valida la información
+                y administra las inscripciones desde un solo lugar.
+            </p>
         </section>
 
         <section class="panel formulario-panel">
             <div class="titulo-panel">
                 <div>
-                    <span class="numero-panel">01 / REGISTRO</span>
-                    <h2>Configurar torneo</h2>
+                    <p class="etiqueta">NUEVO REGISTRO</p>
+                    <h2>Información del torneo</h2>
                 </div>
-                <span class="icono-panel" aria-hidden="true">⌘</span>
+                <span class="icono-panel">⚡</span>
             </div>
 
-            <form id="formularioTorneo" novalidate>
+            <form id="formularioTorneo" novalidate
+                  onsubmit="event.preventDefault(); registrarTorneo();">
 
                 <div class="grupo-campo">
                     <label for="txtNombre">Nombre del torneo</label>
                     <input
                         type="text"
                         id="txtNombre"
-                        placeholder="Ej. Cyber Champions"
+                        name="nombre"
+                        placeholder="Ej. Torneo Legends"
                         autocomplete="off"
-                        maxlength="100"
+                        aria-describedby="errorNombre"
                         required
                     >
-                    <small id="errorNombre" class="error"></small>
+                    <small id="errorNombre" class="mensaje-error"></small>
                 </div>
 
                 <div class="grupo-campo">
                     <label for="txtCategoria">Categoría</label>
-                    <select id="txtCategoria" required>
+                    <select
+                        id="txtCategoria"
+                        name="categoria"
+                        aria-describedby="errorCategoria"
+                        required
+                    >
                         <option value="">Selecciona una categoría</option>
-                        <option value="ESTRATEGIA">Estrategia</option>
-                        <option value="ARCADE">Arcade</option>
-                        <option value="AVENTURA">Aventura</option>
+                        <option value="Arcade">Arcade</option>
                         <option value="Deportes">Deportes</option>
+                        <option value="Estrategia">Estrategia</option>
+                        <option value="Shooter">Shooter</option>
+                        <option value="MOBA">MOBA</option>
                         <option value="Lucha">Lucha</option>
+                        <option value="Carreras">Carreras</option>
                     </select>
-                    <small id="errorCategoria" class="error"></small>
+                    <small id="errorCategoria" class="mensaje-error"></small>
                 </div>
 
                 <div class="grupo-campo">
-                    <label for="txtParticipantes">Participantes</label>
+                    <label for="txtParticipantes">Número de participantes</label>
                     <input
                         type="number"
                         id="txtParticipantes"
-                        placeholder="Entre 1 y 100"
+                        name="participantes"
+                        placeholder="Ej. 20"
                         min="1"
                         max="100"
                         step="1"
+                        aria-describedby="errorParticipantes"
                         required
                     >
-                    <small id="errorParticipantes" class="error"></small>
+                    <small id="errorParticipantes" class="mensaje-error"></small>
                 </div>
 
                 <div class="grupo-campo">
@@ -105,62 +105,60 @@
                     <input
                         type="number"
                         id="txtInscripcion"
-                        placeholder="Ej. 10.00"
+                        name="inscripcion"
+                        placeholder="Ej. 5.00"
                         min="0.01"
-                        step="any"
+                        step="0.01"
+                        aria-describedby="errorInscripcion"
                         required
                     >
-                    <small id="errorInscripcion" class="error"></small>
+                    <small id="errorInscripcion" class="mensaje-error"></small>
                 </div>
 
                 <div class="grupo-campo campo-completo">
-                    <label for="txtEmail">Correo electrónico</label>
+                    <label for="txtEmail">Correo electrónico del organizador</label>
                     <input
                         type="email"
                         id="txtEmail"
-                        placeholder="organizador@neonarena.com"
+                        name="email"
+                        placeholder="organizador@gmail.com"
                         autocomplete="email"
+                        aria-describedby="errorEmail"
                         required
                     >
-                    <small id="errorEmail" class="error"></small>
+                    <small id="errorEmail" class="mensaje-error"></small>
                 </div>
 
                 <div class="acciones-formulario campo-completo">
-                    <button type="submit" class="boton boton-principal">
-                        <span aria-hidden="true">▶</span>
-                        REGISTRAR TORNEO
+                    <button type="submit" class="boton boton-registrar">
+                        <span>⚡</span> Registrar torneo
                     </button>
 
                     <button
                         type="button"
-                        id="btnLimpiar"
-                        class="boton boton-secundario"
+                        class="boton boton-limpiar"
+                        onclick="limpiarFormulario()"
                     >
-                        LIMPIAR
+                        <span>🧹</span> Limpiar
                     </button>
                 </div>
 
                 <p
                     id="mensaje"
-                    class="mensaje"
+                    class="mensaje-general campo-completo"
                     role="status"
                     aria-live="polite"
                 ></p>
-
             </form>
         </section>
 
-        <section class="panel torneos-panel">
+        <section class="panel tabla-panel">
             <div class="titulo-panel">
                 <div>
-                    <span class="numero-panel">02 / COMPETICIONES</span>
+                    <p class="etiqueta">CONTROL DE COMPETENCIAS</p>
                     <h2>Torneos registrados</h2>
                 </div>
-
-                <div class="contador">
-                    <span class="contador-punto"></span>
-                    <span id="totalTorneos">0 TORNEOS</span>
-                </div>
+                <span class="icono-panel">🏆</span>
             </div>
 
             <div class="tabla-contenedor">
@@ -171,30 +169,28 @@
                             <th>Categoría</th>
                             <th>Participantes</th>
                             <th>Inscripción</th>
-                            <th>Email</th>
+                            <th>Correo electrónico</th>
                             <th>Recaudación</th>
                         </tr>
                     </thead>
 
                     <tbody id="tablaTorneos">
-                        <!-- JavaScript genera las filas aquí -->
+                        <!-- dashboard.js insertará los torneos aquí -->
                     </tbody>
                 </table>
-
-                <div id="estadoVacio" class="estado-vacio">
-                    <span class="icono-vacio" aria-hidden="true">▧</span>
-                    <h3>NO HAY TORNEOS REGISTRADOS</h3>
-                    <p>Registra tu primera competición para comenzar.</p>
-                </div>
             </div>
+
+            <p class="nota-tabla">
+                Los registros se mantienen en esta sesión mientras no recargues la página.
+            </p>
         </section>
-
-        <footer class="pie-pagina">
-            <p>NEON ARENA <span>//</span> GAMING MANAGEMENT SYSTEM</p>
-            <p>INSERT COIN <span>◆</span> START GAME</p>
-        </footer>
-
     </main>
-</body>
 
+    <footer class="pie-pagina">
+        <p>ARCADE TOURNAMENTS <span>•</span> Sistema de gestión gamer</p>
+        <p>Desarrollado por Dimas Vera © 2026</p>
+    </footer>
+
+    <script src="dashboard.js" defer></script>
+</body>
 </html>

@@ -1,81 +1,124 @@
 
+/* ==========================================================================
+   EVALUACIÓN JAVASCRIPT
+   Dashboard de Torneos Gamer
+   ========================================================================== */
+
+// Arreglo global donde se almacenan los torneos registrados.
 let torneos = [];
 
+/**
+ * ACTIVIDAD: Registrar y validar un torneo.
+ */
 function registrarTorneo() {
-    // 1. Obtener los valores de los campos existentes
-    let nombre = document.getElementById("txtNombre").value.trim();
-    let categoria = document.getElementById("txtCategoria").value;
-    let participantesTexto = document.getElementById("txtParticipantes").value;
-    let participantes = Number(participantesTexto);
-    let inscripcionTexto = document.getElementById("txtInscripcion").value;
-    let inscripcion = Number(inscripcionTexto);
-    let email = document.getElementById("txtEmail").value.trim();
+    // 1. Obtener los valores del formulario.
+    const nombre = document.getElementById("txtNombre").value.trim();
+    const categoria = document.getElementById("txtCategoria").value;
+    const valorParticipantes = document.getElementById("txtParticipantes").value;
+    const valorInscripcion = document.getElementById("txtInscripcion").value;
+    const email = document.getElementById("txtEmail").value.trim();
 
+    const participantes = Number(valorParticipantes);
+    const inscripcion = Number(valorInscripcion);
+
+    // 2. Limpiar los mensajes de errores anteriores.
     limpiarErrores();
 
     let valido = true;
+    let primerCampoIncorrecto = null;
 
-    // 2. Validar el nombre
+    // Función auxiliar para mostrar el error de cada campo.
+    function mostrarError(idError, mensaje, idCampo) {
+        document.getElementById(idError).textContent = mensaje;
+        valido = false;
+
+        if (primerCampoIncorrecto === null) {
+            primerCampoIncorrecto = idCampo;
+        }
+    }
+
+    // 3. Validar el nombre del torneo.
     if (nombre.length < 4) {
-        document.getElementById("errorNombre").textContent =
-            "El nombre debe tener al menos 4 caracteres.";
-        valido = false;
+        mostrarError(
+            "errorNombre",
+            "El nombre debe tener al menos 4 caracteres.",
+            "txtNombre"
+        );
     }
 
-    // 3. Validar la categoría
+    // 4. Validar la categoría.
     if (categoria === "") {
-        document.getElementById("errorCategoria").textContent =
-            "Seleccione una categoría.";
-        valido = false;
+        mostrarError(
+            "errorCategoria",
+            "Selecciona una categoría para continuar.",
+            "txtCategoria"
+        );
     }
 
-    // 4. Validar participantes: entero entre 1 y 100
+    // 5. Validar el número de participantes.
     if (
-        participantesTexto.trim() === "" ||
+        valorParticipantes.trim() === "" ||
         !Number.isInteger(participantes) ||
         participantes < 1 ||
         participantes > 100
     ) {
-        document.getElementById("errorParticipantes").textContent =
-            "Ingrese un número entero entre 1 y 100.";
-        valido = false;
+        mostrarError(
+            "errorParticipantes",
+            "Ingresa un número entero entre 1 y 100.",
+            "txtParticipantes"
+        );
     }
 
-    // 5. Validar inscripción mayor que cero
+    // 6. Validar el valor de inscripción.
     if (
-        inscripcionTexto.trim() === "" ||
+        valorInscripcion.trim() === "" ||
         !Number.isFinite(inscripcion) ||
         inscripcion <= 0
     ) {
-        document.getElementById("errorInscripcion").textContent =
-            "La inscripción debe ser mayor que 0.";
-        valido = false;
+        mostrarError(
+            "errorInscripcion",
+            "La inscripción debe ser un número mayor que 0.",
+            "txtInscripcion"
+        );
     }
 
-    // 6. Validar correo no vacío y que contenga @
+    // 7. Validar el formato del correo electrónico.
+    const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (email === "") {
-        document.getElementById("errorEmail").textContent =
-            "Ingrese el correo electrónico.";
-        valido = false;
-    } else if (!email.includes("@")) {
-        document.getElementById("errorEmail").textContent =
-            "El correo debe contener el símbolo @.";
-        valido = false;
+        mostrarError(
+            "errorEmail",
+            "Ingresa tu correo electrónico.",
+            "txtEmail"
+        );
+    } else if (!formatoEmail.test(email)) {
+        mostrarError(
+            "errorEmail",
+            "Correo inválido. Ejemplo: jugador@gmail.com",
+            "txtEmail"
+        );
     }
 
-    // Si existe algún error, no registrar el torneo
+    // 8. Si existe algún error, detener el registro.
     if (!valido) {
-        document.getElementById("mensaje").textContent =
-            "Revise los campos señalados antes de continuar.";
-        document.getElementById("mensaje").className = "mensaje-error";
+        const mensaje = document.getElementById("mensaje");
+
+        mensaje.textContent =
+            "No se pudo registrar el torneo. Revisa los campos señalados.";
+
+        mensaje.style.color = "#ff4d6d";
+
+        // Llevar al usuario al primer campo incorrecto.
+        document.getElementById(primerCampoIncorrecto).focus();
+
         return;
     }
 
-    // 7. Calcular la recaudación estimada
-    let recaudacion = participantes * inscripcion;
+    // 9. Calcular la recaudación total.
+    const recaudacion = participantes * inscripcion;
 
-    // 8. Crear el objeto del torneo
-    let nuevoTorneo = {
+    // 10. Crear el objeto con los datos del torneo.
+    const nuevoTorneo = {
         nombre: nombre,
         categoria: categoria,
         participantes: participantes,
@@ -84,40 +127,60 @@ function registrarTorneo() {
         recaudacion: recaudacion
     };
 
-    // 9. Agregar al arreglo
+    // 11. Guardar el torneo en el arreglo.
     torneos.push(nuevoTorneo);
 
-    // 10. Actualizar tabla y limpiar el formulario
+    // 12. Actualizar la tabla de torneos.
     mostrarTorneos();
-    limpiarFormulario();
 
-    // 11. Mostrar confirmación
-    document.getElementById("mensaje").textContent =
-        "✓ Torneo registrado correctamente.";
-    document.getElementById("mensaje").className = "mensaje-exito";
+    // 13. Mostrar confirmación SIN limpiar el formulario.
+    const mensaje = document.getElementById("mensaje");
+
+    mensaje.textContent =
+        "¡Torneo registrado correctamente! La recaudación es $" +
+        recaudacion.toFixed(2) +
+        ". Puedes registrar otro torneo o pulsar Limpiar.";
+
+    mensaje.style.color = "#39ff88";
 }
 
+/**
+ * ACTIVIDAD: Mostrar los torneos registrados en la tabla.
+ */
 function mostrarTorneos() {
-    let html = "";
+    const tabla = document.getElementById("tablaTorneos");
 
-    // Obligatoriamente se utiliza un ciclo for
+    // Vaciar únicamente las filas anteriores para reconstruir la tabla.
+    tabla.replaceChildren();
+
     for (let i = 0; i < torneos.length; i++) {
-        let torneo = torneos[i];
+        const torneo = torneos[i];
+        const fila = document.createElement("tr");
 
-        html += "<tr>";
-        html += "<td>" + torneo.nombre + "</td>";
-        html += "<td>" + torneo.categoria + "</td>";
-        html += "<td>" + torneo.participantes + "</td>";
-        html += "<td>$" + torneo.valorInscripcion.toFixed(2) + "</td>";
-        html += "<td>" + torneo.email + "</td>";
-        html += "<td>$" + torneo.recaudacion.toFixed(2) + "</td>";
-        html += "</tr>";
+        // Crear las celdas de manera segura.
+        const datos = [
+            torneo.nombre,
+            torneo.categoria,
+            torneo.participantes,
+            "$" + torneo.valorInscripcion.toFixed(2),
+            torneo.email,
+            "$" + torneo.recaudacion.toFixed(2)
+        ];
+
+        for (let j = 0; j < datos.length; j++) {
+            const celda = document.createElement("td");
+            celda.textContent = datos[j];
+            fila.appendChild(celda);
+        }
+
+        tabla.appendChild(fila);
     }
-
-    // Reemplazar el contenido, sin duplicar filas
-    document.getElementById("tablaTorneos").innerHTML = html;
 }
 
+/**
+ * ACTIVIDAD: Limpiar el formulario cuando el usuario lo solicite.
+ * Esta función NO elimina los torneos ya registrados.
+ */
 function limpiarFormulario() {
     document.getElementById("txtNombre").value = "";
     document.getElementById("txtCategoria").value = "";
@@ -127,10 +190,16 @@ function limpiarFormulario() {
 
     limpiarErrores();
 
-    document.getElementById("mensaje").textContent = "";
-    document.getElementById("mensaje").className = "";
+    const mensaje = document.getElementById("mensaje");
+    mensaje.textContent = "Formulario limpio. Puedes registrar otro torneo.";
+    mensaje.style.color = "#39ff88";
+
+    document.getElementById("txtNombre").focus();
 }
 
+/**
+ * ACTIVIDAD: Borrar los mensajes de error.
+ */
 function limpiarErrores() {
     document.getElementById("errorNombre").textContent = "";
     document.getElementById("errorCategoria").textContent = "";
